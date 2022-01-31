@@ -1,14 +1,18 @@
-pub fn check_prime(prime: u64) -> bool {
-    for i in 2..prime / 2 {
-        if prime % i == 0 {
-            return false;
-        }
-    }
-    true
+pub fn compute(exp: u128, base: u128, modulus: u128) -> u128 {
+    fast_mod_pow(base, exp, modulus)
 }
-
-pub fn compute(exp: u32, base: u128, modulus: u128) -> u128 {
-    let pow = base.pow(exp);
-    let computed = pow % modulus;
-    computed
+fn fast_mod_pow(mut base: u128, mut exp: u128, modulus: u128) -> u128 {
+    if modulus == 1 {
+        return 0;
+    }
+    let mut result = 1;
+    base = base % modulus;
+    while exp > 0 {
+        if exp % 2 == 1 {
+            result = result * base % modulus;
+        }
+        exp = exp >> 1;
+        base = base * base % modulus
+    }
+    result
 }
